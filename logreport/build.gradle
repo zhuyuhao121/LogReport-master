@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.sun.mail:android-mail:1.6.0'
+    api 'com.squareup.okhttp3:okhttp:3.12.1'
+    api 'com.google.code.gson:gson:2.8.6'
+}
+
+apply plugin: 'maven'
+uploadArchives {
+    repositories.mavenDeployer {
+        // 本地仓库路径D:\WorkSpace gradlew uploadArchives
+//        repository(url: uri('../repository'))
+        repository(url: "file://D://logreport/")
+        // 唯一标识
+        pom.groupId = "com.zhilai"
+        // 项目名称
+        pom.artifactId = "logreport"
+        // 版本号
+        pom.version = "1.0.4"
+    }
+}
+

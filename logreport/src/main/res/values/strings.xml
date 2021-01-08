@@ -1,0 +1,4 @@
+<resources>
+    <string name="email_format_is_incorrect">邮箱格式不正确，请重新输入…</string>
+    <string name="email_sent_successfully">日志已通过邮件发送成功</string>
+</resources>
