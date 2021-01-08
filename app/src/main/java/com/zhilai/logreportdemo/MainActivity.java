@@ -116,26 +116,13 @@ public class MainActivity extends AppCompatActivity {
      * 使用EMAIL发送日志
      */
     private void initEmailReporter() {
-//        EmailReporter email = new EmailReporter(this);
-//        email.setReceiver("534837240@qq.com");//收件人
-//        email.setSender("wenmingvs@163.com");//发送人邮箱
-////        email.setSender("zhuyuhao@chinawebox.com");//发送人邮箱
-//        email.setSendPassword("apptest1234");//邮箱的客户端授权码，注意不是邮箱密码
-//        email.setSMTPHost("smtp.163.com");//SMTP地址
-////        email.setSMTPHost("smtp.ym.163.com");//SMTP地址
-//        email.setPort("465");//SMTP 端口
-//        LogReport.getInstance().setUploadType(email);
-
         EmailBean eBean = new EmailBean();
         eBean.setContent("邮件内容可以自定义");
         eBean.setSubject("邮件主题可以自定义");
         eBean.setFileName("文件名称可以自定义" + ".zip");
-//        eBean.setEmailAccount("zhuyuhao@chinawebox.com");//发送人邮箱
-//        eBean.setEmailPwd("123456");//发送人邮箱密码
-//        eBean.setMailHost("smtp.ym.163.com");//发件服务器地址
-        eBean.setEmailAccount("service@szzhilai.com");//发送人邮箱
-        eBean.setEmailPwd("Zhilai2014");//发送人邮箱密码
-        eBean.setMailHost("smtp.qiye.163.com");//发件服务器地址
+        eBean.setEmailAccount("xxx.com");//发送人邮箱
+        eBean.setEmailPwd("xxx");//发送人邮箱密码
+        eBean.setMailHost("smtp.qiye.163.com");//发件服务器地址（需要根据邮箱类型进行修改）
         eBean.setToEmail("534837240@qq.com;");//收送人邮箱，支持批量添加邮箱，邮箱与邮箱之间用英文";"隔开
         LogReport.getInstance().setUploadType(LogReport.UPLOAD_TYPE_EMAIL);
         LogReport.getInstance().setEmailBean(eBean);

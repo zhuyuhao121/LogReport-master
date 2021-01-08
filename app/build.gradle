@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.zhilai.logreport"
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
@@ -21,11 +21,13 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    api 'junit:junit:4.12'
+    api 'junit:junit:4.13.1'
     //noinspection GradleDynamicVersion
     api 'com.android.support:appcompat-v7:28.+'
     api 'com.github.tbruyelle:rxpermissions:0.10.2'
     api 'io.reactivex.rxjava2:rxjava:2.2.3'
-    api project(path: ':logreport')
+//    api project(path: ':logreport')
 //    api 'com.zhilai:logreport:1.0.0'
+
+    implementation 'com.github.zhuyuhao121:LogReport-master:1.0.0'
 }
