@@ -26,8 +26,8 @@ dependencies {
     api 'com.android.support:appcompat-v7:28.+'
     api 'com.github.tbruyelle:rxpermissions:0.10.2'
     api 'io.reactivex.rxjava2:rxjava:2.2.3'
-//    api project(path: ':logreport')
+    api project(path: ':logreport')
 //    api 'com.zhilai:logreport:1.0.0'
 
-    implementation 'com.github.zhuyuhao121:LogReport-master:1.0.0'
+//    implementation 'com.github.zhuyuhao121:LogReport-master:1.0.0'
 }

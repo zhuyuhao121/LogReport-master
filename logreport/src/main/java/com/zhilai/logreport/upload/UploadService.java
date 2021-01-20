@@ -65,6 +65,7 @@ public class UploadService extends IntentService {
         String fileName = "UploadOn" + ZIP_FOLDER_TIME_FORMAT.format(System.currentTimeMillis()) + ".zip";
         File zipfile = new File(zipfolder, fileName);
         final File rootdir = new File(LogReport.getInstance().getROOT());
+        final String path = LogReport.getInstance().getROOT();
 
         //创建文件，如果父路径缺少，创建父路径
         FileUtil.createFile(zipfolder, zipfile);
@@ -84,20 +85,21 @@ public class UploadService extends IntentService {
                 public void onSuceess() {
                     LogUtil.d(TAG, "日志发送成功！！");
                     LogWriter.writeLog(TAG, "日志发送成功！！");
-                    boolean isOk = FileUtil.deleteDir(zipfolder);
-                    LogUtil.d(TAG, "删除文件是否成功==" + isOk);
-                    boolean checkresult = checkCacheSize(rootdir);
-                    LogUtil.d(TAG, "缓存大小检查，是否删除root下的所有文件 = " + checkresult);
-                    LogWriter.writeLog(TAG, "缓存大小检查，是否删除root下的所有文件 = " + checkresult);
+//                    boolean isOk = FileUtil.deleteDir(zipfolder);
+//                    LogUtil.d(TAG, "删除文件是否成功==" + isOk);
+                    LogReport.getInstance().checkCacheSize(path + "log/");
+//                    LogUtil.d(TAG, "缓存大小检查，是否删除root下的所有文件 = " + checkresult);
+//                    LogWriter.writeLog(TAG, "缓存大小检查，是否删除root下的所有文件 = " + checkresult);
                     stopSelf();
                 }
 
                 @Override
                 public void onError(String error) {
-                    LogUtil.d(TAG, "日志发送失败：  = " + error);
-                    boolean checkresult = checkCacheSize(rootdir);
-                    LogUtil.d(TAG, "缓存大小检查，是否删除root下的所有文件 " + checkresult);
-                    LogWriter.writeLog(TAG, "缓存大小检查，是否删除root下的所有文件 " + checkresult);
+                    LogUtil.d(TAG, "日志发送失败：" + error);
+                    LogWriter.writeLog(TAG, "日志发送失败：" + error);
+                    LogReport.getInstance().checkCacheSize(path + "log/");
+//                    LogUtil.d(TAG, "缓存大小检查，是否删除root下的所有文件 " + checkresult);
+//                    LogWriter.writeLog(TAG, "缓存大小检查，是否删除root下的所有文件 " + checkresult);
                     stopSelf();
                 }
             });
@@ -137,4 +139,20 @@ public class UploadService extends IntentService {
         long dirSize = FileUtil.folderSize(dir);
         return dirSize >= LogReport.getInstance().getCacheSize() && FileUtil.deleteDir(dir);
     }
+
+//    /**
+//     * 检查文件夹是否超出缓存大小
+//     *
+//     * @param dir 需要检查大小的文件夹
+//     * @return 返回是否超过大小，true为是，false为否
+//     */
+//
+//    public boolean checkCacheSize(File dir, int maxBackupIndex) {
+//        long dirSize = FileUtil.folderSize(dir);
+//        if (dirSize >= LogReport.getInstance().getCacheSize()) {
+//            FileUtil.rollOver(dir, maxBackupIndex);
+//            return true;
+//        }
+//        return false;
+//    }
 }

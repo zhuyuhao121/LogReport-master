@@ -31,7 +31,7 @@ allprojects {
 添加依赖
 ``` java
 dependencies {
-    implementation 'com.github.zhuyuhao121:LogReport-master:1.0.0'
+    implementation 'com.github.zhuyuhao121:LogReport-master:1.0.1'
 }
 ```
 
@@ -47,18 +47,19 @@ public class MyApplication extends Application {
     }
 
     private void initCrashReport() {
+         String path = "sdcard/"
+                        + this.getString(this.getApplicationInfo()
+                        .labelRes) + "/";
         LogReport.getInstance()
-                        .setCacheSize(30 * 1024 * 1024)//支持设置缓存大小，超出后清空
-                        .setLogDir(getApplicationContext()
-                                , "sdcard/"
-                                        + this.getString(this.getApplicationInfo()
-                                        .labelRes) + "/")//定义路径为：sdcard/[app name]/
-                        .setWifiOnly(false)//设置只在Wifi状态下上传，设置为false为Wifi和移动网络都上传
-                        .setLogSaver(new CrashWriter(getApplicationContext()))//支持自定义保存崩溃信息的样式
-                        //.setEncryption(new AESEncode()) //支持日志到AES加密或者DES加密，默认不开启
-                        //是否有异常日志后自动上报，true 有异常自动上报， false 只要触发就上报，不检测是否有异常日志
-                        .isAutoReport(false)
-                        .init(MainActivity.this);
+                .setCacheSize(30 * 1024 * 1024)//支持设置缓存大小，超出后清空
+                .setLogDir(getApplicationContext(), path)//定义路径为：sdcard/[app name]/
+                .setWifiOnly(false)//设置只在Wifi状态下上传，设置为false为Wifi和移动网络都上传
+                .setLogSaver(new CrashWriter(getApplicationContext()))//支持自定义保存崩溃信息的样式
+                //.setEncryption(new AESEncode()) //支持日志到AES加密或者DES加密，默认不开启
+                //是否有异常日志后自动上报，true 有异常自动上报， false 只要触发就上报，不检测是否有异常日志
+                .isAutoReport(false)
+                .checkCacheSize(path + "log/")//检查指定路径下的所有文件大小，超过上面设置的缓存大小后，会递归删除文件，直到剩下的文件大小小于缓存大小后停止查询
+                .init(MainActivity.this);
 
         initEmailReporter();
     }
@@ -71,6 +72,7 @@ public class MyApplication extends Application {
                 eBean.setContent("邮件内容可以自定义");
                 eBean.setSubject("邮件主题可以自定义");
                 eBean.setFileName("文件名称可以自定义" + ".zip");
+                //TODO 记得修改发件人邮箱和密码，否则邮件发不出去
                 eBean.setEmailAccount("xxx.com");//发送人邮箱
                 eBean.setEmailPwd("xxx");//发送人邮箱密码
                 eBean.setMailHost("smtp.qiye.163.com");//发件服务器地址（需要根据邮箱类型进行修改）

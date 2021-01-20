@@ -16,6 +16,7 @@ import com.zhilai.logreport.upload.ILogUpload;
 import com.zhilai.logreport.upload.UploadService;
 import com.zhilai.logreport.upload.email.EmailBean;
 import com.zhilai.logreport.upload.email.TestEmail;
+import com.zhilai.logreport.util.FileUtil;
 import com.zhilai.logreport.util.HandlerUtil;
 import com.zhilai.logreport.util.LogUtil;
 import com.zhilai.logreport.util.NetUtil;
@@ -264,7 +265,7 @@ public class LogReport implements Handler.Callback {
 //                }
 //            }
 //        });
-        
+
         uploadFile(zipFile, onUploadFinishedListener);
     }
 
@@ -332,5 +333,24 @@ public class LogReport implements Handler.Callback {
                 break;
         }
         return false;
+    }
+
+    /**
+     * 递归删除一个文件夹，直到小于设置的大小
+     */
+    public LogReport checkCacheSize(String path) {
+        try {
+            Log.d(TAG, "path==" + path);
+            File dir = new File(path);
+            long dirSize = FileUtil.folderSize(dir);
+            Log.d(TAG, "dirSize==" + dirSize);
+            if (dirSize >= LogReport.getInstance().getCacheSize()) {
+                FileUtil.rollOver(dir);
+                checkCacheSize(path);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return this;
     }
 }

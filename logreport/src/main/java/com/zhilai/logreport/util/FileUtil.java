@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FileUtil {
@@ -161,4 +162,74 @@ public class FileUtil {
         return zipfile;
     }
 
+    /**
+     * 清理多余的备份记录
+     *
+     * @throws IOException
+     */
+    public static void rollOver(File dir, int maxBackupIndex) {
+        List<File> files = getAllFiles(dir);
+        Collections.sort(files);
+        if (files.size() > maxBackupIndex) {
+            int index = 0;
+            int diff = files.size() - maxBackupIndex;
+            for (File file : files) {
+                if (index >= diff)
+                    break;
+//                file.delete();
+                deleteDir(file);
+                index++;
+            }
+        }
+    }
+
+    /**
+     * 清理多余的备份记录
+     *
+     * @throws IOException
+     */
+    public static void rollOver(File dir) {
+        List<File> files = getAllFiles(dir);
+        Collections.sort(files);
+//        for (File file : files) {
+//            deleteDir(file);
+//            break;
+//        }
+        deleteDirWihtFile(dir);
+    }
+
+    /**
+     * 计算目录文件数量
+     *
+     * @return
+     */
+    public static List<File> getAllFiles(File dir) {
+        List<File> files = new ArrayList<>();
+        if (dir != null) {
+            String[] names = dir.list();
+            if (names != null) {
+                for (String name : names) {
+                    files.add(new File(dir + System.getProperty("file.separator") + name));
+                }
+            }
+        }
+        return files;
+    }
+
+    /**
+     * 只删除第一个文件，然后退出循环
+     * @param dir
+     */
+    public static void deleteDirWihtFile(File dir) {
+        if (dir == null || !dir.exists() || !dir.isDirectory())
+            return;
+        for (File file : dir.listFiles()) {
+            if (file.isFile())
+                file.delete(); // 删除所有文件
+            else if (file.isDirectory())
+                deleteDirWihtFile(file); // 递规的方式删除文件夹
+            break;
+        }
+        dir.delete();// 删除目录本身
+    }
 }
